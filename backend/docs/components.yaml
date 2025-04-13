@@ -1,0 +1,610 @@
+securitySchemes:
+  BearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+
+schemas:
+  LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+    required:
+      - email
+      - password
+
+  LoginResponse:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+      expiresIn:
+        type: integer
+      tokenType:
+        type: string
+
+  LogoutRequest:
+    type: object
+    properties:
+      token:
+        type: string
+      email:
+        type: string
+        format: email
+    required:
+      - token
+      - email
+
+  RefreshTokenRequest:
+    type: object
+    properties:
+      token:
+        type: string
+    required:
+      - token
+
+  RefreshTokenResponse:
+    type: object
+    properties:
+      accessToken:
+        type: string
+      expiresIn:
+        type: integer
+      tokenType:
+        type: string
+
+  ResetPasswordRequest:
+    type: object
+    properties:
+      token:
+        type: string
+      password:
+        type: string
+        format: password
+      email:
+        type: string
+        format: email
+    required:
+      - token
+      - password
+      - email
+
+  SendOtpRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+    required:
+      - email
+
+  VerifyEmailRequest:
+    type: object
+    properties:
+      token:
+        type: string
+      email:
+        type: string
+        format: email
+    required:
+      - token
+      - email
+
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      email:
+        type: string
+        format: email
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      picture:
+        type: string
+      department:
+        type: string
+      role:
+        type: string
+        enum:
+            - staff 
+            - admin
+            - student
+      isVerified:
+        type: boolean
+      gps:
+        type: string 
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+
+  BaseUserRequest:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      phoneNumber:
+        type: string
+      department:
+        type: string
+      gps:
+        type: string
+      dob:
+        type: string
+        format: date-time
+
+  StudentRequest:
+    allOf:
+      - $ref: '#/components/schemas/BaseUserRequest'
+      - type: object
+        properties:
+          matricNo:
+            type: string
+          units:
+            type: integer
+          cgpa:
+            type: number
+          semester:
+            type: integer
+          level:
+            type: string
+
+  StaffRequest:
+    allOf:
+      - $ref: '#/components/schemas/BaseUserRequest'
+      - type: object
+        properties:
+          directorate:
+            type: string
+          position:
+            type: string
+
+  UpdateUserRequest:
+    oneOf:
+      - $ref: '#/components/schemas/StudentRequest'
+      - $ref: '#/components/schemas/StaffRequest'
+
+  RegisterRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+      role:
+        type: string
+        enum:
+            - student
+            - staff
+            - admin
+      firstName:
+        type: string
+      lastName:
+        type: string
+      department:
+        type: string
+      phoneNumber:
+        type: string
+    required:
+      - email
+      - password
+      - role
+      - firstName
+      - lastName
+      - department
+      - phoneNumber
+
+  Course:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      code:
+        type: string
+      unit:
+        type: integer
+      semester:
+        type: integer
+      level:
+        type: string
+      description:
+        type: string
+
+  CourseListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Course'
+
+  Department:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      code:
+        type: string
+      facultyId:
+        type: string
+      description:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+      faculty.name:
+        type: string
+
+  Faculty:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+
+  DepartmentListResponse:
+    type: object
+    properties:
+      metadata:
+        type: object
+        properties:
+          totalItems:
+            type: integer
+          totalPages:
+            type: integer
+          currentPage:
+            type: integer
+          itemsPerPage:
+            type: integer
+          links:
+            type: object
+            properties:
+              self:
+                type: string
+              first:
+                type: string
+              last:
+                type: string
+              prev:
+                type: string
+              next:
+                type: string
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Department'
+
+  FacultyListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Faculty'
+
+  CalendarResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          url:
+            type: string
+
+  Activity:
+    type: object
+    properties:
+      id:
+        type: string
+      description:
+        type: string
+      type:
+        type: string
+      metadata:
+        type: object
+        properties:
+          status:
+            type: string
+          points:
+            type: number
+      createdAt:
+        type: string
+        format: date-time
+
+  ActivityListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Activity'
+
+  Scholarship:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      datePublished:
+        type: string
+        format: date-time
+      url:
+        type: string
+      applyLink:
+        type: string
+      applicationDeadline:
+        type: string
+      category:
+        type: array
+        items:
+          type: string
+
+  ScholarshipListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Scholarship'
+
+  Announcement:
+    type: object
+    properties:
+      title:
+        type: string
+      content:
+        type: string
+      by:
+        type: string
+      date:
+        type: string
+        format: date-time
+      priority:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+
+  AnnouncementListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Announcement'
+
+  Business:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      image:
+        type: string
+      email:
+        type: string
+        format: email
+      location:
+        type: string
+      contactNumber:
+        type: string
+      website:
+        type: string
+      openingHours:
+        type: string
+      description:
+        type: string
+      category:
+        type: array
+        items:
+          type: string
+
+  BusinessListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Business'
+
+  Event:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      image:
+        type: string
+      description:
+        type: string
+      date:
+        type: string
+        format: date-time
+      location:
+        type: string
+      category:
+        type: array
+        items:
+          type: string
+
+  EventListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/Event'
+
+  NotificationRequest:
+    type: object
+    properties:
+      title:
+        type: string
+      body:
+        type: string
+      gps:
+        type: string
+
+  UpdatePointsRequest:
+    type: object
+    properties:
+      minutes:
+        type: number
+      score:
+        type: number
+      units:
+        type: number
+      course:
+        type: string
+    required:
+      - minutes
+      - score
+      - units
+
+  EnrollCourseRequest:
+    type: object
+    properties:
+      course:
+        type: string
+    required:
+      - course
+
+  PointsResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          points:
+            type: number
+
+  AddPaymentMethodRequest:
+    type: object
+    properties:
+      accountNumber:
+        type: string
+      accountName:
+        type: string
+      bankName:
+        type: string
+    required:
+      - accountNumber
+      - accountName
+      - bankName
+
+  UpdatePaymentMethodRequest:
+    type: object
+    properties:
+      accountNumber:
+        type: string
+      accountName:
+        type: string
+      bankName:
+        type: string
+
+  PaymentMethodResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      accountNumber:
+        type: string
+      accountName:
+        type: string
+      bankName:
+        type: string
+      userId:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+
+  PaymentMethodListResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/components/schemas/PaymentMethodResponse'
+
+  PaymentHistoryResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            userId:
+              type: string
+            amount:
+              type: number
+            status:
+              type: string
+            transactionReference:
+              type: string
+            paymentReference:
+              type: string
+            paidOn:
+              type: string
+              format: date-time
+
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: object
+        properties:
+          name:
+            type: string
+          message:
+            type: string
+
+responses:
+  ServerError:
+    description: An error occurred, Please try again later
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/ErrorResponse'
