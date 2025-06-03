@@ -7,7 +7,7 @@ const teamMembers = [
     name: "Emmanuel Lafenwa",
     title: "Backend Developer",
     description: "Emmanuel is the architect behind Study Earn. He designs and builds the robust backend systems that power the application.",
-    imageUrl: "https://drive.google.com/file/d/1GwX6xuqVh6zw_5spkABoRGYa8nG1Kege/view?usp=sharing",
+    imageUrl: "https://drive.google.com/uc?id=1GwX6xuqVh6zw_5spkABoRGYa8nG1Kege",
     dataAiHint: "professional head shot",
     socials: { linkedin: "https://www.linkedin.com/emmanuel-lafenwa", twitter: "https://x.com/leoemaxie" }
   },
@@ -53,7 +53,7 @@ export function TeamSection() {
                     src={member.imageUrl}
                     alt={member.name}
                     layout="fill"
-                    
+                  
                     data-ai-hint={member.dataAiHint}
                   />
                 </div>

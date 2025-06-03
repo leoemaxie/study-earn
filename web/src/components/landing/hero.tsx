@@ -24,10 +24,10 @@ export function Hero() {
         </div>
         <div className="relative aspect-[16/10] overflow-hidden rounded-xl shadow-2xl">
           <Image
-            src="https://drive.google.com/file/d/1oRh13HrvM1sXw9GkcHZQYkN0PoL_AAm3/view?usp=drive_link"
+            src="https://drive.google.com/uc?id=1oRh13HrvM1sXw9GkcHZQYkN0PoL_AAm3"
             alt="Study Earn App Interface"
             layout="fill"
-            objectFit="cover"
+            objectFit='fill'
             data-ai-hint="app interface education"
             className="transform transition-transform duration-500 hover:scale-105"
           />

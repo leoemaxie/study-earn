@@ -43,7 +43,7 @@ export function ScreenshotCarousel() {
               <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                 <div className="p-1">
                   <Card className="overflow-hidden shadow-lg rounded-lg">
-                    <CardContent className="flex aspect-video items-center justify-center p-0">
+                    <CardContent className="flex items-center justify-center p-0">
                       <Image
                         src={screenshot.src}
                         alt={screenshot.alt}
